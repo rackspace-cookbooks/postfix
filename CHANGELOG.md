@@ -3,6 +3,30 @@ postfix Cookbook CHANGELOG
 This file is used to list changes made in each version of the postfix cookbook.
 
 
+v3.0.4
+------
+### Bug
+- **[COOK-3824](https://tickets.opscode.com/browse/COOK-3824)** - main.cf.erb mishandles lists
+
+### Improvement
+- **[COOK-3822](https://tickets.opscode.com/browse/COOK-3822)** - postfix cookbook readme has an incorrect example
+- Got rubocop errors down to 32
+
+### New Feature
+- **[COOK-2551](https://tickets.opscode.com/browse/COOK-2551)** - Support creating the sender_canonical map file
+
+
+v3.0.2
+------
+### Bug
+- **[COOK-3617](https://tickets.opscode.com/browse/COOK-3617)** - Fix error when no there is no FQDN
+- **[COOK-3530](https://tickets.opscode.com/browse/COOK-3530)** - Update `client.rb` after 3.0.0 refactor
+- **[COOK-2499](https://tickets.opscode.com/browse/COOK-2499)** - Do not use resource cloning
+
+### Improvement
+- **[COOK-3116](https://tickets.opscode.com/browse/COOK-3116)** - Add SmartOS support
+
+
 v3.0.0
 ------
 ### Improvement
