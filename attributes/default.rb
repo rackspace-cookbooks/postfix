@@ -28,6 +28,7 @@ default[:rackspace_postfix][:aliases] = {}
 default[:rackspace_postfix][:main_template_source] = 'rackspace_postfix'
 default[:rackspace_postfix][:master_template_source] = 'rackspace_postfix'
 default[:rackspace_postfix][:aliases_template_source] = 'rackspace_postfix'
+default[:rackspace_postfix][:sasl_auth_template_source] = 'rackspace_postfix'
 default[:rackspace_postfix][:sender_canonical_map_entries] = {}
 default[:rackspace_postfix][:conf_dir] = '/etc/postfix'
 default[:rackspace_postfix][:aliases_db] = '/etc/aliases'
