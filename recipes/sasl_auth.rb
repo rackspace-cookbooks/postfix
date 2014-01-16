@@ -1,10 +1,12 @@
 # encoding: utf-8
 #
 # Author:: Joshua Timberman(<joshua@opscode.com>)
-# Cookbook Name:: postfix
+# Author:: Christopher Coffey(<christopher.coffey@rackspace.com>)
+# Cookbook Name:: rackspace_postfix
 # Recipe:: sasl_auth
 #
 # Copyright 2009, Opscode, Inc.
+# Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,11 +27,11 @@ sasl_pkgs = []
 
 # We use case instead of value_for_platform_family because we need
 # version specifics for RHEL.
-case node['platform_family']
+case node[:platform_family]
 when 'debian'
   sasl_pkgs = %w{libsasl2-2 libsasl2-modules ca-certificates}
 when 'rhel'
-  if node['platform_version'].to_i < 6
+  if node[:platform_version].to_i < 6
     sasl_pkgs = %w{cyrus-sasl cyrus-sasl-plain openssl}
   else
     sasl_pkgs = %w{cyrus-sasl cyrus-sasl-plain ca-certificates}
@@ -48,11 +50,12 @@ execute 'postmap-sasl_passwd' do
 end
 
 template '/etc/postfix/sasl_passwd' do
+  cookbook node[:rackspace_postfix][:sasl_auth_template_source]
   source 'sasl_passwd.erb'
   owner 'root'
   group 'root'
   mode 0400
   notifies :run, 'execute[postmap-sasl_passwd]', :immediately
   notifies :restart, 'service[postfix]'
-  variables(settings: node['postfix']['sasl'])
+  variables(settings: node[:rackspace_postfix][:sasl])
 end
