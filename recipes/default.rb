@@ -23,11 +23,11 @@
 
 package 'postfix'
 
-if node[:rackspace_postfix][:use_procmail]
+if node['rackspace_postfix']['use_procmail']
   package 'procmail'
 end
 
-case node[:platform_family]
+case node['platform_family']
 when 'rhel'
   service 'sendmail' do
     action :nothing
@@ -41,28 +41,28 @@ when 'rhel'
   end
 end
 
-if !node[:rackspace_postfix][:sender_canonical_map_entries].empty?
-  template "#{node[:rackspace_postfix][:conf_dir]}/sender_canonical" do
+if !node['rackspace_postfix']['sender_canonical_map_entries'].empty?
+  template "#{node['rackspace_postfix']['conf_dir']}/sender_canonical" do
     owner 'root'
     group 'root'
     mode  '0644'
     notifies :restart, 'service[postfix]'
   end
 
-  if !node[:rackspace_postfix][:config][:main].key?('sender_canonical_maps')
-    node.set[:rackspace_postfix][:main][:sender_canonical_maps] = "hash:#{node[:rackspace_postfix][:conf_dir]}/sender_canonical"
+  if !node['rackspace_postfix']['config']['main'].key?('sender_canonical_maps')
+    node.set['rackspace_postfix']['main']['sender_canonical_maps'] = "hash:#{node['rackspace_postfix']['conf_dir']}/sender_canonical"
   end
 end
 
 %w{main master}.each do |cfg|
-  template "#{node[:rackspace_postfix][:conf_dir]}/#{cfg}.cf" do
+  template "#{node['rackspace_postfix']['conf_dir']}/#{cfg}.cf" do
     source "#{cfg}.cf.erb"
     owner 'root'
     group 'root'
     mode  '0644'
     notifies :restart, 'service[postfix]'
-    variables(settings: node[:rackspace_postfix][cfg])
-    cookbook node[:rackspace_postfix][:"#{cfg}_template_source"]
+    variables(settings: node['rackspace_postfix'][cfg])
+    cookbook node['rackspace_postfix']['#{cfg}_template_source']
   end
 end
 

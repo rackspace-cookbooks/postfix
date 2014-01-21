@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-node.override[:rackspace_postfix][:mail_type] = 'master'
-node.override[:rackspace_postfix][:config][:main][:inet_interfaces] = 'all'
+node.override['rackspace_postfix']['mail_type'] = 'master'
+node.override['rackspace_postfix']['config']['main']['inet_interfaces'] = 'all'
 
 include_recipe 'rackspace_postfix'

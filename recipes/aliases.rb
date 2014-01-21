@@ -22,8 +22,8 @@ execute 'update-postfix-aliases' do
   action :nothing
 end
 
-template node[:rackspace_postfix][:aliases_db] do
-  cookbook node[:rackspace_postfix][:aliases_template_source]
+template node['rackspace_postfix']['aliases_db'] do
+  cookbook node['rackspace_postfix']['aliases_template_source']
   source 'aliases.erb'
   notifies :run, 'execute[update-postfix-aliases]'
 end

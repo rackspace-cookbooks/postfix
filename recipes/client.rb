@@ -26,20 +26,20 @@ if Chef::Config[:solo]
   return
 end
 
-query = "role:#{node[:rackspace_postfix][:relayhost_role]}"
+query = "role:#{node['rackspace_postfix']['relayhost_role']}"
 relayhost = ''
 results = []
 
-if node.run_list.roles.include?(node[:rackspace_postfix][:relayhost_role])
-  relayhost << node[:ipaddress]
-elsif node[:rackspace_postfix][:multi_environment_relay]
+if node.run_list.roles.include?(node['rackspace_postfix']['relayhost_role'])
+  relayhost << node['ipaddress']
+elsif node['rackspace_postfix']['multi_environment_relay']
   results = search(:node, query)
-  relayhost = results.map { |n| n[:ipaddress] }.first
+  relayhost = results.map { |n| n['ipaddress'] }.first
 else
   results = search(:node, "#{query} AND chef_environment:#{node.chef_environment}")
-  relayhost = results.map { |n| n[:ipaddress] }.first
+  relayhost = results.map { |n| n['ipaddress'] }.first
 end
 
-node.set[:rackspace_postfix][:config][:main][:relayhost] = "[#{relayhost}]"
+node.set['rackspace_postfix']['config']['main']['relayhost'] = "[#{relayhost}]"
 
 include_recipe 'postfix'
