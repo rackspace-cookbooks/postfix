@@ -1,4 +1,4 @@
-postfix Cookbook
+rackspace_postfix Cookbook
 ================
 Installs and configures postfix for client or outbound relayhost, or to do SASL authentication.
 
@@ -8,12 +8,9 @@ On RHEL-family systems, sendmail will be replaced with postfix.
 Requirements
 ------------
 ### Platforms
-- Ubuntu 10.04+
-- Debian 6.0+
-- RHEL/CentOS/Scientific 5.7+, 6.2+
-- Amazon Linux (as of AMIs created after 4/9/2012)
-
-May work on other platforms with or without modification.
+- Ubuntu 12.04
+- Debian 7.0
+- RHEL/CentOS 6.x
 
 
 Attributes
@@ -21,47 +18,47 @@ Attributes
 See `attributes/default.rb` for default values.
 
 ### Generic cookbook attributes
-* `node['postfix']['mail_type']` - Sets the kind of mail configuration. `master` will set up a server (relayhost).
-* `node['postfix']['relayhost_role']` - name of a role used for search in the client recipe.
-* `node['postfix']['multi_environment_relay']` - set to true if nodes should not constrain search for the relayhost in their own environment.
-* `node['postfix']['use_procmail']` - set to true if nodes should use procmail as the delivery agent.
-* `node['postfix']['aliases']` - hash of aliases to create with `recipe[postfix::aliases]`, see below under __Recipes__ for more information.
-* `node['postfix']['main_template_source']` - Cookbook source for main.cf template. Default 'postfix'
-* `node['postfix']['master_template_source']` - Cookbook source for master.cf template. Default 'postfix'
+* `node['rackspace_postfix']['mail_type']` - Sets the kind of mail configuration. `master` will set up a server (relayhost).
+* `node['rackspace_postfix']['relayhost_role']` - name of a role used for search in the client recipe.
+* `node['rackspace_postfix']['multi_environment_relay']` - set to true if nodes should not constrain search for the relayhost in their own environment.
+* `node['rackspace_postfix']['use_procmail']` - set to true if nodes should use procmail as the delivery agent.
+* `node['rackspace_postfix']['aliases']` - hash of aliases to create with `recipe[postfix::aliases]`, see below under __Recipes__ for more information.
+* `node['rackspace_postfix']['main_template_source']` - Cookbook source for main.cf template. Default 'postfix'
+* `node['rackspace_postfix']['master_template_source']` - Cookbook source for master.cf template. Default 'postfix'
 
 ### main.cf and sasl\_passwd template attributes
-The main.cf template has been simplified to include any attributes in the `node['postfix']['main']` data structure.  The following attributes are still included with this cookbook to maintain some semblance of backwards compatibility.
+The main.cf template has been simplified to include any attributes in the `node['rackspace_postfix']['main']` data structure.  The following attributes are still included with this cookbook to maintain some semblance of backwards compatibility.
 
-This change in namespace to `node['postfix']['main']` should allow for greater flexibility, given the large number of configuration variables for the postfix daemon.  All of these cookbook attributes correspond to the option of the same name in `/etc/postfix/main.cf`.
+This change in namespace to `node['rackspace_postfix']['main']` should allow for greater flexibility, given the large number of configuration variables for the postfix daemon.  All of these cookbook attributes correspond to the option of the same name in `/etc/postfix/main.cf`.
 
-* `node['postfix']['main']['biff']` - (yes/no); default no
-* `node['postfix']['main']['append_dot_mydomain']` - (yes/no); default no
-* `node['postfix']['main']['myhostname']` - defaults to fqdn from Ohai
-* `node['postfix']['main']['mydomain']` - defaults to domain from Ohai
-* `node['postfix']['main']['myorigin']` - defaults to $myhostname
-* `node['postfix']['main']['mynetworks']` - default is `127.0.0.0/8`
-* `node['postfix']['main']['inet_interfaces']` - set to `loopback-only`, or `all` for server recipe
-* `node['postfix']['main']['alias_maps']` - set to `hash:/etc/aliases`
-* `node['postfix']['main']['mailbox_size_limit']` - set to `0` (disabled)
-* `node['postfix']['main']['recipient_delimiter']` - set to `+`
-* `node['postfix']['main']['mydestination']` - default fqdn, hostname, localhost.localdomain, localhost
-* `node['postfix']['main']['smtpd_use_tls']` - (yes/no); default yes. See conditional cert/key attributes.
-  - `node['postfix']['main']['smtpd_tls_cert_file']` - conditional attribute, set to full path of server's x509 certificate.
-  - `node['postfix']['main']['smtpd_tls_key_file']` - conditional attribute, set to full path of server's private key
-  - `node['postfix']['main']['smtpd_tls_CAfile']` - set to platform specific CA bundle
-  - `node['postfix']['main']['smtpd_tls_session_cache_database']` - set to `btree:${data_directory}/smtpd_scache`
-* `node['postfix']['main']['smtp_use_tls']` - (yes/no); default yes.  See following conditional attributes.
-  - `node['postfix']['main']['smtp_tls_CAfile']` - set to platform specific CA bundle
-  - `node['postfix']['main']['smtp_tls_session_cache_database']` - set to `btree:${data_directory}/smtpd_scache`
-* `node['postfix']['main']['smtp_sasl_auth_enable']` - (yes/no); default no.  If enabled, see following conditional attributes.
-  - `node['postfix']['main']['smtp_sasl_password_maps']` - Set to `hash:/etc/postfix/sasl_passwd` template file
-  - `node['postfix']['main']['smtp_sasl_security_options']` - Set to noanonymous
-  - `node['postfix']['main']['relayhost']` - Set to empty string
-  - `node['postfix']['sasl']['smtp_sasl_user_name']` - SASL user to authenticate as.  Default empty
-  - `node['postfix']['sasl']['smtp_sasl_passwd']` - SASL password to use.  Default empty.
+* `node['rackspace_postfix']['main']['biff']` - (yes/no); default no
+* `node['rackspace_postfix']['main']['append_dot_mydomain']` - (yes/no); default no
+* `node['rackspace_postfix']['main']['myhostname']` - defaults to fqdn from Ohai
+* `node['rackspace_postfix']['main']['mydomain']` - defaults to domain from Ohai
+* `node['rackspace_postfix']['main']['myorigin']` - defaults to $myhostname
+* `node['rackspace_postfix']['main']['mynetworks']` - default is `127.0.0.0/8`
+* `node['rackspace_postfix']['main']['inet_interfaces']` - set to `loopback-only`, or `all` for server recipe
+* `node['rackspace_postfix']['main']['alias_maps']` - set to `hash:/etc/aliases`
+* `node['rackspace_postfix']['main']['mailbox_size_limit']` - set to `0` (disabled)
+* `node['rackspace_postfix']['main']['recipient_delimiter']` - set to `+`
+* `node['rackspace_postfix']['main']['mydestination']` - default fqdn, hostname, localhost.localdomain, localhost
+* `node['rackspace_postfix']['main']['smtpd_use_tls']` - (yes/no); default yes. See conditional cert/key attributes.
+  - `node['rackspace_postfix']['main']['smtpd_tls_cert_file']` - conditional attribute, set to full path of server's x509 certificate.
+  - `node['rackspace_postfix']['main']['smtpd_tls_key_file']` - conditional attribute, set to full path of server's private key
+  - `node['rackspace_postfix']['main']['smtpd_tls_CAfile']` - set to platform specific CA bundle
+  - `node['rackspace_postfix']['main']['smtpd_tls_session_cache_database']` - set to `btree:${data_directory}/smtpd_scache`
+* `node['rackspace_postfix']['main']['smtp_use_tls']` - (yes/no); default yes.  See following conditional attributes.
+  - `node['rackspace_postfix']['main']['smtp_tls_CAfile']` - set to platform specific CA bundle
+  - `node['rackspace_postfix']['main']['smtp_tls_session_cache_database']` - set to `btree:${data_directory}/smtpd_scache`
+* `node['rackspace_postfix']['main']['smtp_sasl_auth_enable']` - (yes/no); default no.  If enabled, see following conditional attributes.
+  - `node['rackspace_postfix']['main']['smtp_sasl_password_maps']` - Set to `hash:/etc/postfix/sasl_passwd` template file
+  - `node['rackspace_postfix']['main']['smtp_sasl_security_options']` - Set to noanonymous
+  - `node['rackspace_postfix']['main']['relayhost']` - Set to empty string
+  - `node['rackspace_postfix']['sasl']['smtp_sasl_user_name']` - SASL user to authenticate as.  Default empty
+  - `node['rackspace_postfix']['sasl']['smtp_sasl_passwd']` - SASL password to use.  Default empty.
 
 ### master.cf template attributes
-* `node['postfix']['master']['submission'] - Whether to use submission (TCP 587) daemon. (true/false); default false
+* `node['rackspace_postfix']['master']['submission'] - Whether to use submission (TCP 587) daemon. (true/false); default false
 
 
 Recipes
@@ -72,7 +69,7 @@ Installs the postfix package and manages the service and the main configuration 
 For a more dynamic approach to discovery for the relayhost, see the `client` and `server` recipes below.
 
 ### client
-Use this recipe to have nodes automatically search for the mail relay based which node has the `node['postfix']['relayhost_role']` role. Sets the `node['postfix']['relayhost']` attribute to the first result from the search.
+Use this recipe to have nodes automatically search for the mail relay based which node has the `node['rackspace_postfix']['relayhost_role']` role. Sets the `node['rackspace_postfix']['relayhost']` attribute to the first result from the search.
 
 Includes the default recipe to install, configure and start postfix.
 
@@ -82,12 +79,12 @@ Does not work with `chef-solo`.
 Sets up the system to authenticate with a remote mail relay using SASL authentication.
 
 ### server
-To use Chef Server search to automatically detect a node that is the relayhost, use this recipe in a role that will be relayhost. By default, the role should be "relayhost" but you can change the attribute `node['postfix']['relayhost_role']` to modify this.
+To use Chef Server search to automatically detect a node that is the relayhost, use this recipe in a role that will be relayhost. By default, the role should be "relayhost" but you can change the attribute `node['rackspace_postfix']['relayhost_role']` to modify this.
 
-**Note** This recipe will set the `node['postfix']['mail_type']` to "master" with an override attribute.
+**Note** This recipe will set the `node['rackspace_postfix']['mail_type']` to "master" with an override attribute.
 
 ### aliases
-Manage `/etc/aliases` with this recipe. Currently only Ubuntu 10.04 platform has a template for the aliases file. Add your aliases template to the `templates/default` or to the appropriate platform+version directory per the File Specificity rules for templates. Then specify a hash of aliases for the `node['postfix']['aliases']` attribute.
+Manage `/etc/aliases` with this recipe. Currently only Ubuntu 10.04 platform has a template for the aliases file. Add your aliases template to the `templates/default` or to the appropriate platform+version directory per the File Specificity rules for templates. Then specify a hash of aliases for the `node['rackspace_postfix']['aliases']` attribute.
 
 Arrays are supported as alias values, since postfix supports comma separated values per alias, simply specify your alias as an array to use this handy feature.
 
@@ -96,9 +93,9 @@ http://wiki.opscode.com/display/chef/Templates#Templates-TemplateLocationSpecifi
 
 Usage
 -----
-On systems that should simply send mail directly to a relay, or out to the internet, use `recipe[postfix]` and modify the `node['postfix']['relayhost']` attribute via a role.
+On systems that should simply send mail directly to a relay, or out to the internet, use `recipe[postfix]` and modify the `node['rackspace_postfix']['relayhost']` attribute via a role.
 
-On systems that should be the MX for a domain, set the attributes accordingly and make sure the `node['postfix']['mail_type']` attribute is `master`. See __Examples__ for information on how to use `recipe[postfix::server]` to do this automatically.
+On systems that should be the MX for a domain, set the attributes accordingly and make sure the `node['rackspace_postfix']['mail_type']` attribute is `master`. See __Examples__ for information on how to use `recipe[postfix::server]` to do this automatically.
 
 If you need to use SASL authentication to send mail through your ISP (such as on a home network), use `postfix::sasl_auth` and set the appropriate attributes.
 
@@ -115,7 +112,7 @@ name "base"
 run_list("recipe[postfix]")
 override_attributes(
   "mail_type" => "client",
-  "postfix" => {
+  "rackspace_postfix" => {
     "main" => {
       "mydomain" => "example.com",
       "myorigin" => "example.com",
@@ -132,7 +129,7 @@ The `relayhost` role is applied to the nodes that are relayhosts. Often this is 
 name "relayhost"
 run_list("recipe[postfix::server]")
 override_attributes(
-  "postfix" => {
+  "rackspace_postfix" => {
     "mail_type" => "master",
     "main" => {
       "mynetworks" => [ "10.3.3.0/24", "127.0.0.0/8" ],
@@ -149,7 +146,7 @@ The `sasl_relayhost` role is applied to the nodes that are relayhosts and requir
 name "sasl_relayhost"
 run_list("recipe[postfix], recipe[postfix::sasl_auth]")
 override_attributes(
-  "postfix" => {
+  "rackspace_postfix" => {
     "mail_type" => "master",
     "main" => {
       "mynetworks" => "10.3.3.0/24",
@@ -177,7 +174,7 @@ If you'd like to use the more dynamic search based approach for discovery, use t
 name "relayhost"
 run_list("recipe[postfix::server]")
 override_attributes(
-  "postfix" => {
+  "rackspace_postfix" => {
     "main" => {
       "mynetworks" => "10.3.3.0/24",
       "mydomain" => "example.com",
@@ -193,7 +190,7 @@ Then, add the `postfix::client` recipe to the run list of your `base` role or eq
 name "base"
 run_list("recipe[postfix::client]")
 override_attributes(
-  "postfix" => {
+  "rackspace_postfix" => {
     "mail_type" => "client",
     "main" => {
       "mydomain" => "example.com",
@@ -210,7 +207,7 @@ name "postfix_master"
 description "a role for postfix master that isn't relayhost"
 run_list("recipe[postfix::server]")
 override_attributes(
-  "postfix" => {
+  "rackspace_postfix" => {
     "main" => {
       "mynetworks" => "10.3.3.0/24",
       "mydomain" => "example.com",
@@ -226,7 +223,7 @@ The base role would look something like this:
 name "base"
 run_list("recipe[postfix::client]")
 override_attributes(
-  "postfix" => {
+  "rackspace_postfix" => {
     "relayhost_role" => "postfix_master",
     "mail_type" => "client",
     "main" => {
@@ -240,9 +237,11 @@ override_attributes(
 License & Authors
 -----------------
 - Author:: Joshua Timberman <joshua@opscode.com>
+- Author:: Christopher Coffey <christopher.coffey@rackspace.com>
 
 ```text
 Copyright:: 2009-2012, Opscode, Inc
+Copyright:: 2014, Rackspace US, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

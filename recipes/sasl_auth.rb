@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-include_recipe 'postfix'
+include_recipe 'rackspace_postfix'
 
 sasl_pkgs = []
 

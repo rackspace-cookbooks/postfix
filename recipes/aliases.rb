@@ -1,4 +1,7 @@
 # encoding: utf-8
+# Author:: Joshua Timberman(<joshua@opscode.com>)
+# Author:: Christopher Coffey(<christopher.coffey@rackspace.com>)
+#
 # Copyright:: Copyright (c) 2012, Opscode, Inc.
 # Copyright:: Copyright (c) 2014, Rackspace, US Inc.
 #
@@ -15,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe 'postfix'
+include_recipe 'rackspace_postfix'
 
 execute 'update-postfix-aliases' do
   command 'newaliases'

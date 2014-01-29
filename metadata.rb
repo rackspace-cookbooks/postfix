@@ -14,4 +14,3 @@ recipe            'rackspace_postfix::server', 'Sets the mail_type attribute to 
 %w{ubuntu debian redhat centos}.each do |os|
   supports os
 end
-

@@ -1,7 +1,7 @@
 # encoding: utf-8
 # Author:: Joshua Timberman(<joshua@opscode.com>)
 # Author:: Christopher Coffey(<christopher.coffey@rackspace.com>)
-# 
+#
 # Cookbook Name:: rackspace_postfix
 # Recipe:: default
 #
@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-package 'postfix'
+package 'rackspace_postfix'
 
 if node['rackspace_postfix']['use_procmail']
   package 'procmail'
@@ -41,7 +41,7 @@ when 'rhel'
   end
 end
 
-if !node['rackspace_postfix']['sender_canonical_map_entries'].empty?
+if !node['rackspace_postfix']['sender_canonical_map_entries'].empty? # rubocop:disable FavorUnlessOverNegatedIf
   template "#{node['rackspace_postfix']['conf_dir']}/sender_canonical" do
     owner 'root'
     group 'root'
@@ -49,7 +49,7 @@ if !node['rackspace_postfix']['sender_canonical_map_entries'].empty?
     notifies :restart, 'service[postfix]'
   end
 
-  if !node['rackspace_postfix']['config']['main'].key?('sender_canonical_maps')
+  if !node['rackspace_postfix']['config']['main'].key?('sender_canonical_maps') # rubocop:disable FavorUnlessOverNegatedIf
     node.set['rackspace_postfix']['main']['sender_canonical_maps'] = "hash:#{node['rackspace_postfix']['conf_dir']}/sender_canonical"
   end
 end

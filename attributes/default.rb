@@ -1,4 +1,5 @@
 # encoding: utf-8
+#
 # Author:: Joshua Timberman <joshua@opscode.com>
 # Author:: Christopher Coffey <christopher.coffey@rackspace.com>
 #

@@ -28,7 +28,7 @@ end
 
 query = "role:#{node['rackspace_postfix']['relayhost_role']}"
 relayhost = ''
-results = []
+results = [] # rubocop:disable UselessAssignment
 
 if node.run_list.roles.include?(node['rackspace_postfix']['relayhost_role'])
   relayhost << node['ipaddress']
@@ -42,4 +42,4 @@ end
 
 node.set['rackspace_postfix']['config']['main']['relayhost'] = "[#{relayhost}]"
 
-include_recipe 'postfix'
+include_recipe 'rackspace_postfix::default'
