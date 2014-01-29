@@ -21,7 +21,7 @@
 # limitations under the License.
 #
 
-package 'rackspace_postfix'
+package 'postfix'
 
 if node['rackspace_postfix']['use_procmail']
   package 'procmail'
@@ -54,16 +54,24 @@ if !node['rackspace_postfix']['sender_canonical_map_entries'].empty? # rubocop:d
   end
 end
 
-%w{main master}.each do |cfg|
-  template "#{node['rackspace_postfix']['conf_dir']}/#{cfg}.cf" do
-    source "#{cfg}.cf.erb"
-    owner 'root'
-    group 'root'
-    mode  '0644'
-    notifies :restart, 'service[postfix]'
-    variables(settings: node['rackspace_postfix'][cfg])
-    cookbook node['rackspace_postfix']['#{cfg}_template_source']
-  end
+template "#{node['rackspace_postfix']['conf_dir']}/main.cf" do
+  source "main.cf.erb"
+  owner 'root'
+  group 'root'
+  mode  '0644'
+  notifies :restart, 'service[postfix]'
+  variables(settings: node['rackspace_postfix']['main'])
+  cookbook node['rackspace_postfix']['main_template_source']
+end
+
+template "#{node['rackspace_postfix']['conf_dir']}/master.cf" do
+  source "master.cf.erb"
+  owner 'root'
+  group 'root'
+  mode  '0644'
+  notifies :restart, 'service[postfix]'
+  variables(settings: node['rackspace_postfix']['master'])
+  cookbook node['rackspace_postfix']['master_template_source']
 end
 
 service 'postfix' do
