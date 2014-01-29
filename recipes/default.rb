@@ -41,7 +41,7 @@ when 'rhel'
   end
 end
 
-if !node['rackspace_postfix']['sender_canonical_map_entries'].empty? # rubocop:disable FavorUnlessOverNegatedIf
+unless node['rackspace_postfix']['sender_canonical_map_entries'].empty?
   template "#{node['rackspace_postfix']['conf_dir']}/sender_canonical" do
     owner 'root'
     group 'root'
@@ -49,28 +49,28 @@ if !node['rackspace_postfix']['sender_canonical_map_entries'].empty? # rubocop:d
     notifies :restart, 'service[postfix]'
   end
 
-  if !node['rackspace_postfix']['config']['main'].key?('sender_canonical_maps') # rubocop:disable FavorUnlessOverNegatedIf
+  unless node['rackspace_postfix']['config']['main'].key?('sender_canonical_maps')
     node.set['rackspace_postfix']['main']['sender_canonical_maps'] = "hash:#{node['rackspace_postfix']['conf_dir']}/sender_canonical"
   end
 end
 
 template "#{node['rackspace_postfix']['conf_dir']}/main.cf" do
-  source "main.cf.erb"
+  source 'main.cf.erb'
   owner 'root'
   group 'root'
   mode  '0644'
   notifies :restart, 'service[postfix]'
-  variables(settings: node['rackspace_postfix']['main'])
+  variables(settings: node['rackspace_postfix']['config']['main'])
   cookbook node['rackspace_postfix']['main_template_source']
 end
 
 template "#{node['rackspace_postfix']['conf_dir']}/master.cf" do
-  source "master.cf.erb"
+  source 'master.cf.erb'
   owner 'root'
   group 'root'
   mode  '0644'
   notifies :restart, 'service[postfix]'
-  variables(settings: node['rackspace_postfix']['master'])
+  variables(settings: node['rackspace_postfix']['config']['master'])
   cookbook node['rackspace_postfix']['master_template_source']
 end
 

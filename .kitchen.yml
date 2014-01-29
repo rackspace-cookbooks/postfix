@@ -47,6 +47,7 @@ suites:
   run_list:
   - recipe[rackspace_postfix::sasl_auth]
   attributes:
-    postfix:
-      main :
-        smtp_sasl_auth_enable: "yes"
+    rackspace_postfix:
+      config:
+        main :
+          smtp_sasl_auth_enable: "yes"
