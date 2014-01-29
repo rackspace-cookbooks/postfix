@@ -10,7 +10,7 @@ describe 'rackspace_postfix::default' do
   end
 
   before do
-  	stub_command("/usr/bin/test /etc/alternatives/mta -ef /usr/sbin/sendmail.postfix").and_return(true)
+    stub_command('/usr/bin/test /etc/alternatives/mta -ef /usr/sbin/sendmail.postfix').and_return(true)
   end
 
   it 'creates /etc/postfix/main.cf from template with attributes' do

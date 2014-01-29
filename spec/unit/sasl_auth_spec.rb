@@ -10,7 +10,7 @@ describe 'rackspace_postfix::sasl_auth' do
   end
 
   before do
-  	stub_command("/usr/bin/test /etc/alternatives/mta -ef /usr/sbin/sendmail.postfix").and_return(true)
+    stub_command('/usr/bin/test /etc/alternatives/mta -ef /usr/sbin/sendmail.postfix').and_return(true)
   end
 
   it 'installs cyrus-sasl package' do
