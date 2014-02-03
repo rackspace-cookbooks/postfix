@@ -2,6 +2,10 @@ postfix Cookbook CHANGELOG
 ==========================
 This file is used to list changes made in each version of the postfix cookbook.
 
+V4.0.0
+------
+* remove unsupported OS's
+* update namespace to rackspace_postfix
 
 v3.0.4
 ------

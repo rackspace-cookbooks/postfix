@@ -1,10 +1,12 @@
 # encoding: utf-8
 #
 # Author:: Joshua Timberman(<joshua@opscode.com>)
-# Cookbook Name:: postfix
+# Author:: Christopher Coffey(<christopher.coffey@rackspace.com>)
+# Cookbook Name:: rackspace_postfix
 # Recipe:: server
 #
 # Copyright 2009-2012, Opscode, Inc.
+# Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +21,7 @@
 # limitations under the License.
 #
 
-node.override['postfix']['mail_type'] = 'master'
-node.override['postfix']['main']['inet_interfaces'] = 'all'
+node.override['rackspace_postfix']['mail_type'] = 'master'
+node.override['rackspace_postfix']['config']['main']['inet_interfaces'] = 'all'
 
-include_recipe 'postfix'
+include_recipe 'rackspace_postfix'

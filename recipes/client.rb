@@ -1,9 +1,12 @@
 # encoding: utf-8
 # Author:: Joshua Timberman(<joshua@opscode.com>)
-# Cookbook Name:: postfix
+# Author:: Christopher Coffey(<christopher.coffey@rackspace.com>)
+#
+# Cookbook Name:: rackspace_postfix
 # Recipe:: client
 #
 # Copyright 2009-2012, Opscode, Inc.
+# Copyright 2014, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,13 +26,13 @@ if Chef::Config[:solo]
   return
 end
 
-query = "role:#{node['postfix']['relayhost_role']}"
+query = "role:#{node['rackspace_postfix']['relayhost_role']}"
 relayhost = ''
-results = []
+results = [] # rubocop:disable UselessAssignment
 
-if node.run_list.roles.include?(node['postfix']['relayhost_role'])
+if node.run_list.roles.include?(node['rackspace_postfix']['relayhost_role'])
   relayhost << node['ipaddress']
-elsif node['postfix']['multi_environment_relay']
+elsif node['rackspace_postfix']['multi_environment_relay']
   results = search(:node, query)
   relayhost = results.map { |n| n['ipaddress'] }.first
 else
@@ -37,6 +40,6 @@ else
   relayhost = results.map { |n| n['ipaddress'] }.first
 end
 
-node.set['postfix']['main']['relayhost'] = "[#{relayhost}]"
+node.set['rackspace_postfix']['config']['main']['relayhost'] = "[#{relayhost}]"
 
-include_recipe 'postfix'
+include_recipe 'rackspace_postfix::default'
