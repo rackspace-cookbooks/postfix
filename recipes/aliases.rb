@@ -1,5 +1,9 @@
 # encoding: utf-8
+# Author:: Joshua Timberman(<joshua@opscode.com>)
+# Author:: Christopher Coffey(<christopher.coffey@rackspace.com>)
+#
 # Copyright:: Copyright (c) 2012, Opscode, Inc.
+# Copyright:: Copyright (c) 2014, Rackspace, US Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +18,15 @@
 # limitations under the License.
 #
 
-include_recipe 'postfix'
+include_recipe 'rackspace_postfix'
 
 execute 'update-postfix-aliases' do
   command 'newaliases'
   action :nothing
 end
 
-template node['postfix']['aliases_db'] do
+template node['rackspace_postfix']['aliases_db'] do
+  cookbook node['rackspace_postfix']['aliases_template_source']
   source 'aliases.erb'
   notifies :run, 'execute[update-postfix-aliases]'
 end

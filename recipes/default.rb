@@ -1,9 +1,12 @@
 # encoding: utf-8
 # Author:: Joshua Timberman(<joshua@opscode.com>)
-# Cookbook Name:: postfix
+# Author:: Christopher Coffey(<christopher.coffey@rackspace.com>)
+#
+# Cookbook Name:: rackspace_postfix
 # Recipe:: default
 #
 # Copyright 2009-2012, Opscode, Inc.
+# Copyright 2014, Rackspace, US Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,12 +23,12 @@
 
 package 'postfix'
 
-if node['postfix']['use_procmail']
+if node['rackspace_postfix']['use_procmail']
   package 'procmail'
 end
 
 case node['platform_family']
-when 'rhel', 'fedora'
+when 'rhel'
   service 'sendmail' do
     action :nothing
   end
@@ -38,29 +41,37 @@ when 'rhel', 'fedora'
   end
 end
 
-if !node['postfix']['sender_canonical_map_entries'].empty?
-  template "#{node['postfix']['conf_dir']}/sender_canonical" do
+unless node['rackspace_postfix']['sender_canonical_map_entries'].empty?
+  template "#{node['rackspace_postfix']['conf_dir']}/sender_canonical" do
     owner 'root'
-    group 0
+    group 'root'
     mode  '0644'
     notifies :restart, 'service[postfix]'
   end
 
-  if !node['postfix']['main'].key?('sender_canonical_maps')
-    node.set['postfix']['main']['sender_canonical_maps'] = "hash:#{node['postfix']['conf_dir']}/sender_canonical"
+  unless node['rackspace_postfix']['config']['main'].key?('sender_canonical_maps')
+    node.set['rackspace_postfix']['main']['sender_canonical_maps'] = "hash:#{node['rackspace_postfix']['conf_dir']}/sender_canonical"
   end
 end
 
-%w{main master}.each do |cfg|
-  template "#{node['postfix']['conf_dir']}/#{cfg}.cf" do
-    source "#{cfg}.cf.erb"
-    owner 'root'
-    group 0
-    mode 00644
-    notifies :restart, 'service[postfix]'
-    variables(settings: node['postfix'][cfg])
-    cookbook node['postfix']["#{cfg}_template_source"]
-  end
+template "#{node['rackspace_postfix']['conf_dir']}/main.cf" do
+  source 'main.cf.erb'
+  owner 'root'
+  group 'root'
+  mode  '0644'
+  notifies :restart, 'service[postfix]'
+  variables(settings: node['rackspace_postfix']['config']['main'])
+  cookbook node['rackspace_postfix']['main_template_source']
+end
+
+template "#{node['rackspace_postfix']['conf_dir']}/master.cf" do
+  source 'master.cf.erb'
+  owner 'root'
+  group 'root'
+  mode  '0644'
+  notifies :restart, 'service[postfix]'
+  variables(settings: node['rackspace_postfix']['config']['master'])
+  cookbook node['rackspace_postfix']['master_template_source']
 end
 
 service 'postfix' do
