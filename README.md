@@ -234,6 +234,14 @@ override_attributes(
 )
 ```
 
+Contributing
+------------
+* See guidelines [here](https://github.com/rackspace-cookbooks/contributing/blob/master/CONTRIBUTING.md)
+
+Testing
+-------
+* See guidelines [here](https://github.com/rackspace-cookbooks/contributing/blob/master/CONTRIBUTING.md)
+
 License & Authors
 -----------------
 - Author:: Joshua Timberman <joshua@opscode.com>
