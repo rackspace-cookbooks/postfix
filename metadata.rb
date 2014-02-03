@@ -4,7 +4,7 @@ description       'Installs and configures postfix for client or outbound relayh
 maintainer        'Rackspace, US Inc.'
 maintainer_email  'rackspace-cookbooks@rackspace.com'
 license           'Apache 2.0'
-version           '4.0.0'
+version           '4.0.1'
 recipe            'rackspace_postfix', 'Installs and configures postfix'
 recipe            'rackspace_postfix::sasl_auth', 'Set up postfix to auth to a server with sasl'
 recipe            'rackspace_postfix::aliases', 'Manages /etc/aliases'
